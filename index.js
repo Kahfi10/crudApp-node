@@ -33,7 +33,7 @@ app.use((req, res, next)=>{
 });
 
 // set template engine
-app.set(';view engine', 'ejs');
+app.set('view engine', 'ejs');
 
 // route prefix
 app.use('', require('./routes/routes'));
