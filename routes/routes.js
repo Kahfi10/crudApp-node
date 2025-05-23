@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/users.js');
+const User = require('../models/users');
 const multer = require('multer');
 
 // image upload configuration
@@ -25,17 +25,15 @@ router.post('/add', upload, (req, res) =>{
         phone: req.body.phone,
         image: req.file.filename
     });
-    user.save((err) => {
-        if (err) {
-            res.json({messaage: err.message, type: 'danger'});
-        } else {
-            req.session.message = {
-                type: 'success',
-                message: 'User added successfully'
-            }
-            res.redirect('/');
-        }
-    })
+    user.save().then(()=>{
+        req.session.message ={
+            type: 'success',
+            message: 'user added succesfully!'
+        };
+        res.redirect('/');
+    }).catch((err)=>{
+        res.json({message: err.message, type:'danger'});
+    });
 })
 
 
