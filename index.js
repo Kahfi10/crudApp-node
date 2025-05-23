@@ -7,15 +7,17 @@ const session = require('express-session');
 const app =  express();
 const PORT = process.env.PORT || 4000;
 
-//database connection
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-const db = mongoose.connection;
-db.on('error', (error) => {
-    console.log('Error connecting to the database:', error);
+// database connection
+const url = process.env.MONGO_URL || 'mongodb://localhost:27017/crudApp_node';
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Database connected successfully');
+}).catch((err) => {
+    console.log('Database connection failed', err);
 });
-db.once('open', () => {
-    console.log('Connected to the database');
-});
+
 
 // middleware
 app.use(express.urlencoded({ extended: false}));
@@ -36,7 +38,7 @@ app.use((req, res, next)=>{
 app.set('view engine', 'ejs');
 
 // route prefix
-app.use('', require('./routes/routes'));
+app.use('', require('./routes/routes.js'));
 
 
 app.listen(PORT, () => {
