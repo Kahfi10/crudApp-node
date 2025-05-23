@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const multer = require('multer');
+const users = require('../models/users');
 
 // image upload configuration
 var storage = multer.diskStorage({
@@ -36,10 +37,20 @@ router.post('/add', upload, (req, res) =>{
     });
 })
 
+// get all users
+router.get("/", async (req, res) => {
+  try {
+    const usersList = await User.find().exec();
 
-
-router.get('/', (req, res) =>{
-    res.render('index.ejs', { title: 'Home page' });
+    res.render('index', {
+      title: 'Home Page',
+      users: usersList
+    });
+  } catch (err) {
+    res.json({
+      message: err.message
+    });
+  }
 });
 
 router.get('/add', (req, res) => {
