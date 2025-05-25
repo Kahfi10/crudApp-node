@@ -11,7 +11,7 @@
             <% } %>
             <div class="table-responsive">
                 <% if (users != '') { %>
-                     <table class="table table-striped text-center">
+                     <table class="table table-striped text-center my-4">
                     <thead>
                         <tr class="bg-primary text-light">
                         <th>ID</th>
@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                         <% users.forEach((row, index) => { %>
-                        <tr>
+                        <tr class="align-middle">
                             <td><%= index + 1 %></td>
                             <td><img src="<%= row.image %>" width="50" class="img-thumbnail" alt=""></td>
                             <td><%= row.name %></td>
