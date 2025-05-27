@@ -107,4 +107,26 @@ router.get('/edit/:id', async (req, res) => {
     });
   });
 
+  // Delete user route
+  router.get('/delete/:id', async (req, res) => {
+    let id = req.params.id;
+    try {
+      const result = await User.findByIdAndDelete(id).exec();
+      if (result && result.image) {
+        try {
+          fs.unlinkSync('./uploads/' + result.image);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+      req.session.message = {
+        type: 'info',
+        message: 'User deleted successfully!'
+      };
+      res.redirect('/');
+    } catch (err) {
+      res.json({ message: err.message });
+    }
+  });
+
 module.exports = router;
